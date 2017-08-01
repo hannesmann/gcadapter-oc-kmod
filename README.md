@@ -14,8 +14,6 @@ The default overclock is from 125 hz -> 500 hz.
 
 `make clean` to clean up
 
-`make install` to install the .ko to /usr/lib/modules/your-kernel-name
-
 `sudo insmod gcadapter_oc.ko` to load the module into the running kernel (you'll need to replug the adapter to get any effect, check `dmesg`)
 
 `sudo rmmod gcadapter_oc.ko` to unload the module (restores the default rate of 125 hz)
