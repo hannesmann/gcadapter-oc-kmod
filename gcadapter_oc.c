@@ -3,12 +3,15 @@
 #include <linux/kernel.h>
 #include <linux/usb.h>
 
-#include "gcadapter.h"
-
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Hannes Mann");
 MODULE_DESCRIPTION("Filter kernel module to set the polling rate of the Wii U/Mayflash GameCube Adapter to a custom value.");
 MODULE_VERSION("1.0");
+
+#define GCADAPTER_VID 0x057e
+#define GCADAPTER_PID 0x0337
+#define GCADAPTER_DEFAULT_INTERVAL 8
+#define GCADAPTER_RECOMMENDED_INTERVAL 2
 
 static struct usb_device* adapter_device;
 static unsigned short rate = GCADAPTER_RECOMMENDED_INTERVAL;
