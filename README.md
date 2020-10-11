@@ -18,4 +18,8 @@ The default overclock is from 125 hz to 500 hz. Overclocking up to 1000 hz is po
 
 Polling rate is set according to the `bInterval` value in the USB endpoint descriptor. The value sets the polling rate in milliseconds, for example: an interval value of 4 equals 250 hz.
 
-You can change the rate by using the kernel parameter `gcadapter_oc.interval=<rate>` (if installed), passing the rate to `sudo insmod` or going into `/sys/module/gcadapter_oc/parameters` using `echo` to change the value.
+You can change the rate by using the kernel parameter `gcadapter_oc.rate=<rate>` (if installed), passing the rate to `sudo insmod` or going into `/sys/module/gcadapter_oc/parameters` using `echo` to change the value.
+
+## Video
+
+This video shows how to load the module and change the polling rate: https://streamable.com/sxysq
