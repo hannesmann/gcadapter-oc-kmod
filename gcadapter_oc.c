@@ -60,6 +60,46 @@ static int on_usb_notify(struct notifier_block* self, unsigned long action, void
 
 static struct notifier_block usb_nb = { .notifier_call = on_usb_notify };
 
+static int bus_device_cb(struct usb_device* device, void* data) {
+	if(device->descriptor.idVendor == GCADAPTER_VID && device->descriptor.idProduct == GCADAPTER_PID && adapter_device == NULL) {
+		adapter_device = device;
+		printk(KERN_INFO "gcadapter_oc: Adapter connected\n");
+				
+		patch_endpoints();
+	}
+	return 0;
+}
+
+extern struct bus_type usb_bus_type;
+static int __init on_module_init(void) {
+	if(rate > 255) {
+		printk(KERN_WARNING "gcadapter_oc: Invalid rate parameter specified.\n");
+		rate = 255;
+	}
+	
+	if(rate == 0) {
+		printk(KERN_WARNING "gcadapter_oc: Invalid rate parameter specified.\n");
+		rate = 1;
+	}
+    	
+	usb_for_each_dev(NULL, &bus_device_cb);
+	usb_register_notify(&usb_nb);
+
+	return 0;
+}
+
+static void __exit on_module_exit(void) {
+	if(adapter_device != NULL) {
+		rate = 8;
+		patch_endpoints();
+	}
+	
+	usb_unregister_notify(&usb_nb);
+}
+
+module_init(on_module_init);
+module_exit(on_module_exit);
+
 static int on_rate_changed(const char* value, const struct kernel_param* kp) {
 	int res = param_set_ushort(value, kp);
 
@@ -87,33 +127,3 @@ static struct kernel_param_ops rate_ops =
 
 module_param_cb(rate, &rate_ops, &rate, 0644);
 MODULE_PARM_DESC(rate, "Polling rate (default: 2)");
-
-static int __init on_module_init(void) {
-	if(rate > 255) {
-		printk(KERN_WARNING "gcadapter_oc: Invalid rate parameter specified.\n");
-		rate = 255;
-	}
-	
-	if(rate == 0) {
-		printk(KERN_WARNING "gcadapter_oc: Invalid rate parameter specified.\n");
-		rate = 1;
-	}
-    	
-	// TODO: find existing devices here
-	adapter_device = NULL;
-	usb_register_notify(&usb_nb);
-
-	return 0;
-}
-
-static void __exit on_module_exit(void) {
-	if(adapter_device != NULL) {
-		rate = 8;
-		patch_endpoints();
-	}
-	
-	usb_unregister_notify(&usb_nb);
-}
-
-module_init(on_module_init);
-module_exit(on_module_exit);
