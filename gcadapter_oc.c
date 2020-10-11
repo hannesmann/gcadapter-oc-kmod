@@ -78,7 +78,6 @@ static int bus_device_cb(struct usb_device* device, void* data) {
 	return 0;
 }
 
-extern struct bus_type usb_bus_type;
 static int __init on_module_init(void) {
 	if(configured_interval > 255) {
 		printk(KERN_WARNING "gcadapter_oc: Invalid interval parameter specified.\n");
@@ -89,7 +88,7 @@ static int __init on_module_init(void) {
 		printk(KERN_WARNING "gcadapter_oc: Invalid interval parameter specified.\n");
 		configured_interval = 1;
 	}
-    	
+		
 	usb_for_each_dev(NULL, &bus_device_cb);
 	usb_register_notify(&usb_nb);
 
@@ -110,26 +109,25 @@ module_exit(on_module_exit);
 static int on_interval_changed(const char* value, const struct kernel_param* kp) {
 	int res = param_set_ushort(value, kp);
 
-    if(res == 0) {		
-    	if(configured_interval > 255) { 
+	if(res == 0) {		
+		if(configured_interval > 255) { 
 			printk(KERN_WARNING "gcadapter_oc: Invalid interval parameter specified.\n");
 			configured_interval = 255; 
 		}
-    	else if(configured_interval == 0) { 
+		else if(configured_interval == 0) { 
 			printk(KERN_WARNING "gcadapter_oc: Invalid interval parameter specified.\n");
 			configured_interval = 1; 
 		}
-    	
+		
 		patch_endpoints(configured_interval);
-    }
+	}
 
 	return res;
 }
 
-static struct kernel_param_ops interval_ops =
-{
-    .set = &on_interval_changed,
-    .get = &param_get_ushort
+static struct kernel_param_ops interval_ops = {
+	.set = &on_interval_changed,
+	.get = &param_get_ushort
 };
 
 module_param_cb(interval, &interval_ops, &configured_interval, 0644);
