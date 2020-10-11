@@ -130,5 +130,5 @@ static struct kernel_param_ops interval_ops = {
 	.get = &param_get_ushort
 };
 
-module_param_cb(interval, &interval_ops, &configured_interval, 0644);
-MODULE_PARM_DESC(interval, "Polling rate (default: 2)");
+module_param_cb(rate, &interval_ops, &configured_interval, 0644);
+MODULE_PARM_DESC(rate, "Polling rate (default: 2)");
