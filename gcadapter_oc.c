@@ -39,8 +39,7 @@ static int on_usb_notify(struct notifier_block* self, unsigned long action, void
 	
 	switch(action) {
 		case USB_DEVICE_ADD:
-			if(device->descriptor.idVendor == GCADAPTER_VID && device->descriptor.idProduct == GCADAPTER_PID && adapter_device == NULL)
-			{
+			if(device->descriptor.idVendor == GCADAPTER_VID && device->descriptor.idProduct == GCADAPTER_PID && adapter_device == NULL) {
 				adapter_device = device;
 				printk(KERN_INFO "gcadapter_oc: Adapter connected\n");
 				
@@ -49,8 +48,7 @@ static int on_usb_notify(struct notifier_block* self, unsigned long action, void
 			break;
 			
 		case USB_DEVICE_REMOVE:
-			if(device->descriptor.idVendor == GCADAPTER_VID && device->descriptor.idProduct == GCADAPTER_PID && adapter_device != NULL)
-			{
+			if(device->descriptor.idVendor == GCADAPTER_VID && device->descriptor.idProduct == GCADAPTER_PID && adapter_device == device) {
 				adapter_device = NULL;
 				printk(KERN_INFO "gcadapter_oc: Adapter disconnected\n");
 			}
