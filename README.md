@@ -2,7 +2,9 @@
 
 Kernel module for overclocking the Nintendo Wii U/Mayflash GameCube adapter.
 
-The default overclock is from 125 hz to 500 hz. Overclocking up to 1000 hz is possible but 500 hz is set as a "safe" default since the official Nintendo adapter can't keep up with a consistent 1000 hz.
+The default overclock is from 125 hz to 1000 hz. If you experience stutter or dropped inputs try lowering the rate to 500 hz.
+
+This [document](https://docs.google.com/document/d/1cQ3pbKZm_yUtcLK9ZIXyPzVbTJkvnfxKIyvuFMwzWe0/edit) by [SSBM_Arte](https://twitter.com/SSBM_Arte) has more detailed information regarding controller overclocking.
 
 ## Building and running
 

@@ -14,7 +14,7 @@ MODULE_VERSION("1.1");
 static struct usb_device* adapter_device = NULL;
 
 static unsigned short restore_interval = 8;
-static unsigned short configured_interval = 2;
+static unsigned short configured_interval = 1;
 
 /* Patches all applicable endpoints. Returns the bInterval value used before patching. */
 static unsigned short patch_endpoints(unsigned short interval) {
@@ -145,4 +145,4 @@ static struct kernel_param_ops interval_ops = {
 };
 
 module_param_cb(rate, &interval_ops, &configured_interval, 0644);
-MODULE_PARM_DESC(rate, "Polling rate (default: 2)");
+MODULE_PARM_DESC(rate, "Polling rate (default: 1)");
