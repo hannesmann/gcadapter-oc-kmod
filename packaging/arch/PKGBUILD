@@ -1,0 +1,33 @@
+# Maintainer: Hannes Mann <hannesmann2000@gmail.com>
+# Contributor: Hannes Mann <hannesmann2000@gmail.com>
+
+pkgname=gcadapter-oc-dkms
+pkgver=1.1
+pkgrel=1
+pkgdesc="Kernel module for overclocking the Nintendo Wii U/Mayflash GameCube adapter."
+arch=('any')
+url="https://github.com/HannesMann/gcadapter-oc-kmod"
+license=('GPL2')
+depends=('dkms')
+source=('https://github.com/HannesMann/gcadapter-oc-kmod/archive/v1.1.tar.gz'
+        'dkms.conf')
+md5sums=('8e3c905216223d8d116042f742dd72e9'
+         '75ae8140a90cb150cb3f56cf816d440c')
+
+prepare() {
+  echo "gcadapter_oc" > gcadapter-oc.conf
+}
+
+package() {
+  # Copy dkms.conf
+  install -Dm644 "${srcdir}"/dkms.conf "${pkgdir}"/usr/src/${pkgname}-${pkgver}/dkms.conf
+
+  # Load module on boot
+  install -Dm644 "${srcdir}"/gcadapter-oc.conf "${pkgdir}"/usr/lib/modules-load.d/gcadapter-oc.conf
+
+  # Set name and version
+  sed -e "s/@PKGVER@/${pkgver}/" \
+      -i "${pkgdir}"/usr/src/${pkgname}-${pkgver}/dkms.conf
+
+  cp -r gcadapter-oc-kmod-${pkgver}/* "${pkgdir}"/usr/src/${pkgname}-${pkgver}/
+}
