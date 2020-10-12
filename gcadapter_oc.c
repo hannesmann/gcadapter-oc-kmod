@@ -31,19 +31,32 @@ static unsigned short patch_endpoints(unsigned short interval) {
 					if(altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x81 || altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x02) {
 						old_interval = altsettingptr->endpoint[endpoint].desc.bInterval;
 						altsettingptr->endpoint[endpoint].desc.bInterval = interval;
+						
+						printk(KERN_INFO "gcadapter_oc: bInterval value of endpoint 0x%.2x set to %u.\n", altsettingptr->endpoint[endpoint].desc.bEndpointAddress, interval);
 					}
 				}
 			}
+
+			int ret = 0;
+			
+			if(ret = usb_lock_device_for_reset(adapter_device, NULL)) {
+				printk(KERN_ERR "gcadapter_oc: Failed to acquire lock for USB device (error: %d). bInterval value was NOT changed.\n", ret);
+			}
+			else {
+				if(ret = usb_reset_device(adapter_device)) { 
+					printk(KERN_ERR "gcadapter_oc: Could not reset device (error: %d). bInterval value was NOT changed.\n", ret);
+				}
+				
+				usb_unlock_device(adapter_device);
+			}
 		}
-		
-		usb_reset_device(adapter_device);
 	}
 
 	return old_interval;
 }
 
-static int on_usb_notify(struct notifier_block* self, unsigned long action, void* dev) {
-	struct usb_device* device = dev;
+static int on_usb_notify(struct notifier_block* self, unsigned long action, void* _device) {
+	struct usb_device* device = _device;
 	
 	switch(action) {
 		case USB_DEVICE_ADD:
@@ -56,7 +69,7 @@ static int on_usb_notify(struct notifier_block* self, unsigned long action, void
 			break;
 			
 		case USB_DEVICE_REMOVE:
-			if(device->descriptor.idVendor == GCADAPTER_VID && device->descriptor.idProduct == GCADAPTER_PID && adapter_device == device) {
+			if(adapter_device == device) {
 				adapter_device = NULL;
 				printk(KERN_INFO "gcadapter_oc: Adapter disconnected\n");
 			}
@@ -68,13 +81,14 @@ static int on_usb_notify(struct notifier_block* self, unsigned long action, void
 
 static struct notifier_block usb_nb = { .notifier_call = on_usb_notify };
 
-static int bus_device_cb(struct usb_device* device, void* data) {
+static int usb_device_cb(struct usb_device* device, void* data) {
 	if(device->descriptor.idVendor == GCADAPTER_VID && device->descriptor.idProduct == GCADAPTER_PID && adapter_device == NULL) {
 		adapter_device = device;
 		printk(KERN_INFO "gcadapter_oc: Adapter connected\n");
 				
 		restore_interval = patch_endpoints(configured_interval);
 	}
+
 	return 0;
 }
 
@@ -89,7 +103,7 @@ static int __init on_module_init(void) {
 		configured_interval = 1;
 	}
 		
-	usb_for_each_dev(NULL, &bus_device_cb);
+	usb_for_each_dev(NULL, &usb_device_cb);
 	usb_register_notify(&usb_nb);
 
 	return 0;
@@ -107,9 +121,9 @@ module_init(on_module_init);
 module_exit(on_module_exit);
 
 static int on_interval_changed(const char* value, const struct kernel_param* kp) {
-	int res = param_set_ushort(value, kp);
+	int ret = param_set_ushort(value, kp);
 
-	if(res == 0) {		
+	if(!ret) {		
 		if(configured_interval > 255) { 
 			printk(KERN_WARNING "gcadapter_oc: Invalid interval parameter specified.\n");
 			configured_interval = 255; 
@@ -122,7 +136,7 @@ static int on_interval_changed(const char* value, const struct kernel_param* kp)
 		patch_endpoints(configured_interval);
 	}
 
-	return res;
+	return ret;
 }
 
 static struct kernel_param_ops interval_ops = {
