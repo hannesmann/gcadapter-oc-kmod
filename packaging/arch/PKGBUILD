@@ -2,14 +2,14 @@
 # Contributor: Hannes Mann <hannesmann2000@gmail.com>
 
 pkgname=gcadapter-oc-dkms
-pkgver=1.2
+pkgver=1.3
 pkgrel=1
 pkgdesc="Kernel module for overclocking the Nintendo Wii U/Mayflash GameCube adapter."
 arch=('any')
 url="https://github.com/HannesMann/gcadapter-oc-kmod"
 license=('GPL2')
 depends=('dkms')
-source=('https://github.com/HannesMann/gcadapter-oc-kmod/archive/v1.2.tar.gz'
+source=('https://github.com/HannesMann/gcadapter-oc-kmod/archive/v1.3.tar.gz'
         'dkms.conf')
 md5sums=('SKIP'
          '75ae8140a90cb150cb3f56cf816d440c')
