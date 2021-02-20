@@ -16,6 +16,8 @@ This [document](https://docs.google.com/document/d/1cQ3pbKZm_yUtcLK9ZIXyPzVbTJkv
 
 `sudo rmmod gcadapter_oc.ko` to unload the module.
 
+If you get an error saying "building multiple external modules is not supported" it's because you have a space somewhere in the path to the gcadapter-oc-kmod directory. GNU Make doesn't handle spaces in filenames very well so move the directory and it will work.
+
 ## Packaging
 
 A PKGBUILD is available for Arch Linux in `packaging/`. This package uses DKMS to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot. 
