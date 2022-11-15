@@ -8,6 +8,8 @@ This [document](https://docs.google.com/document/d/1cQ3pbKZm_yUtcLK9ZIXyPzVbTJkv
 
 ## Building
 
+**For Steam Deck users:** Instructions are available [here](STEAMOS.md).
+
 Use `make` to build gcadapter_oc.ko and `sudo insmod gcadapter_oc.ko` to load the module into the running kernel.
 
 [![asciicast](https://asciinema.org/a/455371.svg)](https://asciinema.org/a/455371)
