@@ -10,9 +10,9 @@ sudo pacman-key --init
 sudo pacman-key --populate archlinux
 ```
 
-Install the kernel headers:
+Install the base development tools and Valve kernel headers (accept all packages when prompted):
 ```
-sudo pacman -S linux-neptune-headers
+sudo pacman -S base-devel linux-neptune-headers
 ```
 
 Switch to the directory where you downloaded gcadapter-oc-kmod (or open a new terminal by right clicking and selecting `Open Terminal Here`). These commands will build the module and only need to be executed once:
