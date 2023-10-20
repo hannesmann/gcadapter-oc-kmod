@@ -22,7 +22,7 @@ GNU Make can't handle spaces in filenames so move the directory to a path withou
 
 ## Installing
 
-A PKGBUILD is available for Arch Linux in `packaging/`. This package uses DKMS to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot.
+A PKGBUILD is available for Arch Linux in `packaging/` and in the [AUR](https://aur.archlinux.org/packages/gcadapter-oc-dkms). This package uses DKMS to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot.
 
 Prepackaged versions can be found under "Releases".
 
