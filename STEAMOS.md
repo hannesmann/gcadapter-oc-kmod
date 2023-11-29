@@ -14,7 +14,7 @@ sudo pacman-key --populate archlinux holo
 Install the base development tools and kernel headers (accept all packages when prompted):
 
 ```text
-sudo pacman -S --needed base-devel linux-neptune-61-headers
+sudo pacman -S --needed base-devel "$(cat /usr/lib/modules/$(uname -r)/pkgbase)-headers"
 ```
 
 These commands will download and build the module. They only need to be executed once.
