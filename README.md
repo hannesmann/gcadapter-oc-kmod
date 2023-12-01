@@ -8,7 +8,7 @@ This [document](https://docs.google.com/document/d/1cQ3pbKZm_yUtcLK9ZIXyPzVbTJkv
 
 ## Building
 
-**For Steam Deck users:** Instructions are available [here](STEAMOS.md).
+**For Steam Deck users:** Instructions for a manual install are available [here](STEAMOS.md). Alternatively, @linuxgamingcentral has created a convenient script for setting up the module: [gcadapter-oc-kmod-deck](https://github.com/linuxgamingcentral/gcadapter-oc-kmod-deck)
 
 Use `make` to build gcadapter_oc.ko and `sudo insmod gcadapter_oc.ko` to load the module into the running kernel.
 
