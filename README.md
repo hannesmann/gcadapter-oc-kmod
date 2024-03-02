@@ -24,6 +24,8 @@ GNU Make can't handle spaces in filenames so move the directory to a path withou
 
 A PKGBUILD is available for Arch Linux in `packaging/` and in the [AUR](https://aur.archlinux.org/packages/gcadapter-oc-dkms). This package uses DKMS to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot.
 
+Two RPM packages are available in the `packaging/rpms/` directory and can be installed locally by running either `rpm-ostree install akmod-gcadapter-oc-1.4-1.fc39.x86_64.rpm gcadapter-oc-kmod-1.4-1.fc39.x86_64.rpm` if on an ostree based distro like Kinoite/Silverblue or `sudo dnf install akmod-gcadapter-oc-1.4-1.fc39.x86_64.rpm gcadapter-oc-kmod-1.4-1.fc39.x86_64.rpm` if on a dnf based distro. These pacakges use AKMOD to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot.
+
 Prepackaged versions can be found under "Releases".
 
 For other distros copying the module to an appropriate directory under `/usr/lib/modules`, running `sudo depmod` and creating a file called `/usr/lib/modules-load.d/gcadapter-oc.conf` with the contents `gcadapter_oc` should be enough to load the module automatically. You'll need to rebuild the module and copy every time you upgrade your kernel so I don't recommend it!
