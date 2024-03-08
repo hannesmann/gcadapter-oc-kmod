@@ -6,9 +6,15 @@ The default overclock is from 125 Hz to 1000 Hz. Official adapters should be abl
 
 This [document](https://docs.google.com/document/d/1cQ3pbKZm_yUtcLK9ZIXyPzVbTJkvnfxKIyvuFMwzWe0/edit) by [SSBM_Arte](https://twitter.com/SSBM_Arte) has more detailed information regarding controller overclocking.
 
-## Building
+## Installing
 
-**For Steam Deck users:** Instructions for a manual install are available [here](STEAMOS.md).
+- **Arch Linux, Manjaro, etc:** Arch-based distros use DKMS to rebuild the module on every kernel update. A PKGBUILD is available in `packaging/arch` and in the [AUR](https://aur.archlinux.org/packages/gcadapter-oc-dkms). A prebuilt package can be found in the "Releases" tab.
+- **Fedora, Nobara, etc:** RPM-based distros use AKMOD to rebuild the module on every kernel update. A SPEC file is available in `packaging/rpms`. A prebuilt package can be found in the "Releases" tab.
+- **SteamOS 3 (Steam Deck):** Instructions for a manual install are available in [STEAMOS.md](STEAMOS.md).
+
+For other distros, follow the build guide and copy the module to an appropriate directory under `/usr/lib/modules` (example: `/usr/lib/modules/$(uname -r)/extra`). After copying the module, run `depmod` and create a file called `/usr/lib/modules-load.d/gcadapter-oc.conf` with the contents `gcadapter_oc`. This should be enough to load the module automatically. The module will need to be rebuilt every time you update the kernel.
+
+## Building
 
 Use `make` to build gcadapter_oc.ko and `sudo insmod gcadapter_oc.ko` to load the module into the running kernel.
 
@@ -19,16 +25,6 @@ If you want to unload the module (revert the increased polling rate) use `sudo r
 If you get an error saying "building multiple external modules is not supported" it's because you have a space somewhere in the path to the gcadapter-oc-kmod directory.
 
 GNU Make can't handle spaces in filenames so move the directory to a path without spaces (example: `/home/falco/My Games/gcadapter-oc-kmod` -> `/home/falco/gcadapter-oc-kmod`).
-
-There is also a .spec file available for building the RPM packages with AKMOD support in `packaging/rpms`.
-
-## Installing
-
-A PKGBUILD is available for Arch Linux in `packaging/arch` and in the [AUR](https://aur.archlinux.org/packages/gcadapter-oc-dkms). This package uses DKMS to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot.
-
-Prepackaged versions can be found under "Releases".
-
-For other distros copying the module to an appropriate directory under `/usr/lib/modules`, running `sudo depmod` and creating a file called `/usr/lib/modules-load.d/gcadapter-oc.conf` with the contents `gcadapter_oc` should be enough to load the module automatically. You'll need to rebuild the module and copy every time you upgrade your kernel so I don't recommend it!
 
 ## Changing the polling rate
 
