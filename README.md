@@ -20,9 +20,11 @@ If you get an error saying "building multiple external modules is not supported"
 
 GNU Make can't handle spaces in filenames so move the directory to a path without spaces (example: `/home/falco/My Games/gcadapter-oc-kmod` -> `/home/falco/gcadapter-oc-kmod`).
 
+There is also a .spec file available for building the RPM packages with AKMOD support in `packaging/rpms`.
+
 ## Installing
 
-A PKGBUILD is available for Arch Linux in `packaging/` and in the [AUR](https://aur.archlinux.org/packages/gcadapter-oc-dkms). This package uses DKMS to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot.
+A PKGBUILD is available for Arch Linux in `packaging/arch` and in the [AUR](https://aur.archlinux.org/packages/gcadapter-oc-dkms). This package uses DKMS to install and auto-update the module when the kernel is updated. A configuration file is added to load the module automatically on boot.
 
 Prepackaged versions can be found under "Releases".
 
