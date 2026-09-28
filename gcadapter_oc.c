@@ -47,8 +47,9 @@ static unsigned short patch_endpoints(unsigned short interval) {
 				printk(KERN_ERR "gcadapter_oc: Warning! Failed to acquire lock for USB device (error: %d). Resetting device anyway...\n", ret);
 			}
 			/* TODO: It might be possible to make the new bInterval value take effect without calling usb_reset_device? */
-			if(usb_reset_device(adapter_device)) {
-				printk(KERN_ERR "gcadapter_oc: Could not reset device (error: %d). bInterval value was NOT changed.\n", ret);
+			int reset_ret = usb_reset_device(adapter_device);
+			if(reset_ret) {
+				printk(KERN_ERR "gcadapter_oc: Could not reset device (error: %d). bInterval value was NOT changed.\n", reset_ret);
 			}
 			/* Only unlock the device if usb_lock_device_for_reset succeeded. */
 			if(!ret) {
